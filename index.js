@@ -2,19 +2,13 @@ $( document ).ready(function() {
     console.log( "ready!" );
     });
 
-$( "button.continue" ).html( "Next Step..." )
+$(document).ready(function() {
+  $('#nameform').submit(function(event) {
+    event.preventDefault();
 
-var hiddenBox = $( "#banner-message" );
-$( "#button-container button" ).on( "click", function( event ) {
-  hiddenBox.show();
-});
+    var firstName = $('#fname').val();
+    var lastName = $('#lname').val();
 
-$.ajax({
-    url: "http://localhost:8080/index.html?#",
-    data: {
-      zipcode: 97201
-    },
-    success: function( result ) {
-      $( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
-    }
+    $('#jumbotron').html('BOOM COIDING, your name is: ' + firstName + ' ' + lastName);
   });
+});
