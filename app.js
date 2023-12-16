@@ -39,45 +39,38 @@ app.delete('/api/v1/deleteUser', function (req, res) {
 });
 app.post('/api/v1/addUser', function (req, res) {
   fs.readFile(__dirname + "/data/" + "users.json", 'utf8', function (err, data) {
-      data = JSON.parse(data);
-      data["user" + req.query["user"]] = {
-          name: req.query["name"],
-          password: req.query["password"],
-          profession: req.query["profession"],
-          id: req.query["user"]
-      }
-      fs.writeFile(__dirname + "/data/users.json", JSON.stringify(data), err => {
-          if (err) {
-              console.error("error" + err);
-              return;
-          }
-      });
-
-      console.log("d" + data);
-      res.end(JSON.stringify(data));
-  });
-
-
-});
-//TRY TO FIX
-app.get('/api/v1/filterUsers', function(req, res) {
-  fs.readFile(__dirname + "/data/" + "users.json", 'utf8', function(err, data) {
     if (err) {
       console.error(err);
       res.status(500).send("Error reading user data.");
       return;
     }
-
-    var userSearch = req.query["user"];
-    var filterThis = JSON.parse(data);
-    var filtered = filterThis["user" + userSearch];
-
-    if (!filtered) {
-      res.status(404).send("User not found.");
-      return;
+    data = JSON.parse(data);
+    data["user" + req.query["user"]] = {
+      name: req.query["name"],
+      password: req.query["password"],
+      profession: req.query["profession"],
+      id: req.query["user"]
     }
+    fs.writeFile(__dirname + "/data/users.json", JSON.stringify(data), err => {
+      if (err) {
+        console.error("error" + err);
+        return;
+      }
+    });
 
-    console.log(filtered);
-    res.json(filtered);
+    console.log("d" + data);
+    res.end(JSON.stringify(data));
   });
 });
+//TRY TO FIX
+app.get('/api/v1/filterUser', function(req, res){
+  fs.readFile(__dirname + "/data/" + "users.json", 'utf8', function(err, data){
+      data = JSON.parse(data);
+      var userVal = "user" + req.query["user"];
+      if (data[userVal]) {
+          res.end(JSON.stringify(data[userVal]));
+          console.log(data[userVal]);
+      }
+  });
+});
+
