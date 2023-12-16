@@ -37,31 +37,29 @@ app.delete('/api/v1/deleteUser', function (req, res) {
     res.end(JSON.stringify(data));
   });
 });
-app.post('/api/v1/addUser', function(req, res){
-  fs.readFile(__dirname + "/data/" + "users.json", 'utf8', function(err, data){
+app.post('/api/v1/addUser', function (req, res) {
+  fs.readFile(__dirname + "/data/" + "users.json", 'utf8', function (err, data) {
       data = JSON.parse(data);
-      var userVal = "user" + req.query["user"];
-      var sendObj = {
-          "name" : req.query["name"], 
-          "password" : req.query["password"],
-          "profression" : req.query["profession"],
-          "id" : req.query["user"]
-      };
-      data[userVal] = sendObj;
-
+      data["user" + req.query["user"]] = {
+          name: req.query["name"],
+          password: req.query["password"],
+          profession: req.query["profession"],
+          id: req.query["user"]
+      }
       fs.writeFile(__dirname + "/data/users.json", JSON.stringify(data), err => {
           if (err) {
-              console.error(err);
-          return;
+              console.error("error" + err);
+              return;
           }
       });
 
-  console.log(data);
-  res.end(JSON.stringify(data));
-
+      console.log("d" + data);
+      res.end(JSON.stringify(data));
   });
+
+
 });
-//couldnt quite get this to work
+//TRY TO FIX
 app.get('/api/v1/filterUsers', function(req, res) {
   fs.readFile(__dirname + "/data/" + "users.json", 'utf8', function(err, data) {
     if (err) {
